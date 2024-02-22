@@ -1,0 +1,14 @@
+Package: moddevr
+Type: Package
+Title: Model development tools in R
+Version: 0.1
+Author: Rick Donnelly
+Maintainer: Rick Donnelly <rick.donnelly@gmail.com>
+Description: Library of functions used to summarise
+    microsimulation outcomes and generate evaluation measures
+    for the multi-agent simulation modelling systems.
+Depends:
+    R (>= 4.3.0)
+Imports:
+    tidyverse (>= 1.2)
+License: None
