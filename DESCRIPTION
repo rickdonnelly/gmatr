@@ -1,14 +1,15 @@
-Package: moddevr
+Package: gmatr
 Type: Package
-Title: Model development tools in R
+Title: Generalised modelling analytics in R
 Version: 0.1
 Author: Rick Donnelly
 Maintainer: Rick Donnelly <rick.donnelly@gmail.com>
 Description: Library of functions used to summarise
-    microsimulation outcomes and generate evaluation measures
-    for the multi-agent simulation modelling systems.
+    modelling outcomes and generate evaluation measures
+    in multi-agent simulation modelling systems.
 Depends:
     R (>= 4.3.0)
 Imports:
-    tidyverse (>= 1.2)
+    tidyverse (>= 2.0)
 License: None
+RoxygenNote: 7.2.3
