@@ -29,7 +29,7 @@
 #' calc_model_accuracy(assignment_results, "count", "assigned", 0.2)
 #' # You can group the data when passing it to this function:
 #' calc_model_accuracy(group_by(assignment_results, functional_type),
-#'.  "count", "assigned", 0.1))
+#'   "count", "assigned", 0.1))
 
 calc_model_accuracy <- function(dt, observed, predicted, gamma = 0, places = 2) {
   # Make sure that the user has passed a valid value for gamma

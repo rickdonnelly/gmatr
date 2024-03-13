@@ -43,5 +43,5 @@ This function returns a tibble with a variety of model accuracy
 calc_model_accuracy(assignment_results, "count", "assigned", 0.2)
 # You can group the data when passing it to this function:
 calc_model_accuracy(group_by(assignment_results, functional_type),
-.  "count", "assigned", 0.1))
+  "count", "assigned", 0.1))
 }
