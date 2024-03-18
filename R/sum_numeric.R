@@ -22,12 +22,12 @@
 
 sum_numeric <- function(df, var, places = 4, na_rm = TRUE, max_print = 99) {
   # Calculate the stats of interest
-  detailed_sum <- summarise(df, n = n(), missing = NA, 
+  detailed_sum <- summarise(df, n = n(), missing = sum(is.na(!!sym(var))), 
     min = min(!!sym(var), na.rm = na_rm),
-    mean = mean(!!sym(var), na.rm = na_rm),
+    mean = round(mean(!!sym(var), na.rm = na_rm), places),
     median = median(!!sym(var), na.rm = na_rm),
     max = max(!!sym(var), na.rm = na_rm),
-    SD = sd(!!sym(var), na.rm = na_rm)
+    SD = round(sd(!!sym(var), na.rm = na_rm), places)
   )
 
   # If the user inadvertently passes a tibble with a huge number of levels in
@@ -44,12 +44,12 @@ sum_numeric <- function(df, var, places = 4, na_rm = TRUE, max_print = 99) {
   # at the end as well.
   if (is_grouped_df(df)) {
     add_total <- ungroup(df) %>%
-      summarise(n = n(), missing = NA, 
+      summarise(n = n(), missing = sum(is.na(!!sym(var))), 
         min = min(!!sym(var), na.rm = na_rm),
-        mean = mean(!!sym(var), na.rm = na_rm),
+        mean = round(mean(!!sym(var), na.rm = na_rm), places),
         median = median(!!sym(var), na.rm = na_rm),
         max = max(!!sym(var), na.rm = na_rm),
-        SD = sd(!!sym(var), na.rm = na_rm))
+        SD = round(sd(!!sym(var), na.rm = na_rm), places))
     groupings <- setdiff(names(detailed_sum), names(add_total))
     if (length(groupings) > 0) add_total[[groupings[[1]]]] <- "Total"
     detailed_sum <- bind_rows(detailed_sum, add_total)
