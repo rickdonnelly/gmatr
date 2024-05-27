@@ -1,6 +1,6 @@
 Package: gmatr
 Type: Package
-Title: Generalised modelling analytics in R
+Title: Generic modelling analytics in R
 Version: 0.1
 Author: Rick Donnelly
 Maintainer: Rick Donnelly <rick.donnelly@gmail.com>

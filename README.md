@@ -1,4 +1,4 @@
-# gmatr: Generalised modelling analytics in R
+# gmatr: Generic modelling analytics in R
 
 This is a collection of tools that I often use in model development work. This implementation is in the R programming language, and structured as a R package.
 
