@@ -2,8 +2,12 @@
 
 export(calc_aggregate_error)
 export(calc_model_accuracy)
+export(create_frequency_labels)
+export(gather_matrix)
 export(get_tibble_header)
 export(list_tibble_contents)
+export(percent)
+export(plot_NCHRP_comparison)
 export(regression_factory)
 export(sum_levels)
 export(sum_numeric)
