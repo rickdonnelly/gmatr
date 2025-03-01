@@ -15,9 +15,6 @@
 #'   handled), default is 300 percent
 #' @param show_AEC Boolean variable indicating whether the approximate error
 #'   in count (AEC) is shown, defaults to TRUE
-#' @param show_exclusions Boolean variable indicating whether the number of
-#'   observations in `df` that are outside of the `max_pct_error` (and thus,
-#'   not shown on the plot) are reported, defaults to TRUE
 #'
 #' @details This function creates a plot of percent error in traffic assignment
 #'   by comparing observed and predicted values as shown in NCHRP Report 750.
@@ -34,10 +31,7 @@
 #'   The function normally plots observations with percent error ranging from 
 #'   -150 to 300 percent. The positive value is set by the `max_pct_error`
 #'   parameter. The plot is not symmetrical, but by definition no observation
-#'   can have a negative percent error less than -100 percent. Unless the user
-#'   disables it by setting `show_exclusions` to FALSE an annotation will be 
-#'   added at the top of the plot showing the number of observations not shown
-#'   (i.e., outside of the range specified by `max_pct_error`. If you want to
+#'   can have a negative percent error less than -100 percent. If you want to
 #'   show all observations regardless of how compressed the space between the
 #'   MDE lines is simply set `max_pct_error` to the largest percent error in
 #'   your data. (Note that you cannot set `max_pct_error` to a huge number, as
@@ -56,8 +50,7 @@
 #' pdf(filename, height = 8, width = 11); print(eh); dev.off()
 
 plot_NCHRP_comparison <- function(df, observed, predicted, groupvar,
-  plot_title = NULL, max_pct_error = 300, show_AEC = TRUE,
-  show_exclusions = TRUE) {
+  plot_title = NULL, max_pct_error = 300, show_AEC = TRUE) {
   # Remove observations that do not have valid observed or predicted flows. We
   # will assume that a count must be a positive number to quality, and predicted
   # values must be zero or greater. Missing values are invalid in both cases.
@@ -98,17 +91,13 @@ plot_NCHRP_comparison <- function(df, observed, predicted, groupvar,
   # Create text strings reporting the number of observations not plotted and
   # percent of observations within the MDE and AEC curves. Note that percent
   # error can be negative, so compare to absolute values.
-  excluded_obs <- ""
-  if (beyond_limits == 1) {
-    excluded_obs <- paste("1 observation with percent error >", max_pct_error,
-      "not shown")
-  } else if (beyond_limits > 1) {
-    excluded_obs <- paste(beyond_limits, "observations with percent error >",
-      max_pct_error, "not shown")
-  }
   caption_text <- (paste0(pct_within_mde,
     "% of observations within MDE (solid line) and ", pct_within_aec,
     "% within AEC (dashed line)"))
+  if (beyond_limits > 0) {
+    caption_text <- paste0(caption_text, ", ", beyond_limits,
+      " observations with percent error > ", max_pct_error, " not shown")
+  }
 
   # Finally, create the plot object. We will need to create the MDE and AEC
   # lines on the fly
@@ -122,15 +111,7 @@ plot_NCHRP_comparison <- function(df, observed, predicted, groupvar,
     labs(title = plot_title, y = "percent error", caption = caption_text,
       color = groupvar) +
     theme(plot.caption = element_text(hjust = 0))
-  
-  # Add the number of excluded observations if greater than zero and the user
-  # has not turned this off
-  if (show_exclusions & beyond_limits > 0) {
-    plot_obj <- plot_obj +
-      annotate("text", x = largest_count * 0.6, y = max_pct_error, vjust = -0.25,
-        hjust = 0.5, label = excluded_obs, size = 3.0)
-  }
-  
+
   # Finally, add the AEC lines unless the user has asked us not to
   if (show_AEC) {
     aec_line <- tibble(x = mde_line$x, y = calc_aec(x))

@@ -11,8 +11,7 @@ plot_NCHRP_comparison(
   groupvar,
   plot_title = NULL,
   max_pct_error = 300,
-  show_AEC = TRUE,
-  show_exclusions = TRUE
+  show_AEC = TRUE
 )
 }
 \arguments{
@@ -37,10 +36,6 @@ handled), default is 300 percent}
 
 \item{show_AEC}{Boolean variable indicating whether the approximate error
 in count (AEC) is shown, defaults to TRUE}
-
-\item{show_exclusions}{Boolean variable indicating whether the number of
-observations in `df` that are outside of the `max_pct_error` (and thus,
-not shown on the plot) are reported, defaults to TRUE}
 }
 \description{
 Create NCHRP highway validation plot
@@ -61,10 +56,7 @@ This function creates a plot of percent error in traffic assignment
   The function normally plots observations with percent error ranging from 
   -150 to 300 percent. The positive value is set by the `max_pct_error`
   parameter. The plot is not symmetrical, but by definition no observation
-  can have a negative percent error less than -100 percent. Unless the user
-  disables it by setting `show_exclusions` to FALSE an annotation will be 
-  added at the top of the plot showing the number of observations not shown
-  (i.e., outside of the range specified by `max_pct_error`. If you want to
+  can have a negative percent error less than -100 percent. If you want to
   show all observations regardless of how compressed the space between the
   MDE lines is simply set `max_pct_error` to the largest percent error in
   your data. (Note that you cannot set `max_pct_error` to a huge number, as
