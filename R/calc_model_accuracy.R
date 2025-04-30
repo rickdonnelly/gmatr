@@ -58,15 +58,18 @@ calc_model_accuracy <- function(dt, observed, predicted, gamma = 0, places = 2) 
   }
 
   # Now calculate the aggregated statistics
-  aggregated <- summarise(verified, n = n(), bias = sum(error), # / n,
-    MAE = round(sum(abs(error)) / n, places),
+  aggregated <- summarise(verified, n = n(), sum_O = sum(O), sum_P = sum(P),
+    bias = sum(error), MAE = round(sum(abs(error)) / n, places),
     PMAE = round(sum(abs(error)) / sum(O), places),
     RMSE = round(sqrt(sum(SSD) / n), places), 
     PRMSE = round(RMSE / mean(O), places),
     MSE = round(sum(SSD) / n, places), PA = round(sum(within_gamma) / n, places))
 
-  # Rename predictive accuracy label to include the gamma level
-  modify_names <- names(aggregated)
+  # Rename predictive accuracy label to include the gamma level and the sums of the
+  # observed and predicted vectors
+  modify_names <- names(aggregated) %>%
+    gsub("sum_O", paste0("sum_", observed), .) %>%
+    gsub("sum_P", paste0("sum_", predicted), .)
   modify_names[length(modify_names)] <- paste0("PA_", gamma)
   names(aggregated) <- modify_names
   return(aggregated)
