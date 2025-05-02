@@ -59,7 +59,7 @@ calc_model_accuracy <- function(dt, observed, predicted, gamma = 0, places = 2) 
 
   # Now calculate the aggregated statistics
   aggregated <- summarise(verified, n = n(), sum_O = sum(O), sum_P = sum(P),
-    bias = sum(error), MAE = round(sum(abs(error)) / n, places),
+    bias = sum(error) / n, MAE = round(sum(abs(error)) / n, places),
     PMAE = round(sum(abs(error)) / sum(O), places),
     RMSE = round(sqrt(sum(SSD) / n), places), 
     PRMSE = round(RMSE / mean(O), places),
