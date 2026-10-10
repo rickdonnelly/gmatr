@@ -4,7 +4,7 @@
 \alias{freq_matrix}
 \title{Create two-dimensional matrix of grouped frequencies or weighted sums}
 \usage{
-freq_matrix(df, group_vars, descending = TRUE, weight_var = NULL)
+freq_matrix(df, group_vars, descending = TRUE, weight_var = NULL, places = 1)
 }
 \arguments{
 \item{df}{Name of the tibble (data frame) object containing the data to be 
@@ -19,6 +19,9 @@ tibble will be sorted in descending order by row sum (defaults to TRUE)}
 \item{weight_var}{An optional variable number to weight the observations
 by when constructing the frequency matrix (defaults to NULL for no 
 weighting}
+
+\item{places}{Number of places past the decimal to be displayed for the 
+calculated percentages}
 }
 \description{
 Create two-dimensional matrix of grouped frequencies or weighted sums

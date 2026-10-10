@@ -9,6 +9,8 @@
 #' @param weight_var An optional variable number to weight the observations
 #'   by when constructing the frequency matrix (defaults to NULL for no 
 #'   weighting
+#' @param places Number of places past the decimal to be displayed for the 
+#'   calculated percentages
 #'
 #' @details This function creates two-dimensional matrix of frequencies or
 #'   weighted frequencies using two or more grouping variables, with the row
@@ -23,10 +25,11 @@
 #' eh <- gmatr::freq_matrix(survey_data, c("hhsize", "income"))
 
 
-freq_matrix <- function(df, group_vars, descending = TRUE, weight_var = NULL) {
+freq_matrix <- function(df, group_vars, descending = TRUE, weight_var = NULL,
+  places = 1) {
   # I want to first count or sum the data using the user-specified grouping and
   # optional weighting variable
-  step_1 <- group_by(eh, across(all_of(group_vars)))
+  step_1 <- group_by(df, across(all_of(group_vars)))
   if (!is.null(weight_var)) {
     step_2 <- reframe(step_1, zed = sum(freq, na.rm = TRUE))
   } else {
@@ -39,7 +42,7 @@ freq_matrix <- function(df, group_vars, descending = TRUE, weight_var = NULL) {
   step_3 <- step_2 %>%
     pivot_wider(names_from = all_of(row_vars), values_from = zed, values_fill = 0) %>%
     mutate(total = rowSums(across(where(is.numeric)), na.rm = TRUE), 
-      percent = round((total / sum(total)) * 100, 1))
+      percent = round((total / sum(total)) * 100, places))
   
   # If the user has asked to sort the columns in descending order by total do so
   if (descending == TRUE) step_3 <- arrange(step_3, desc(total))
@@ -52,7 +55,7 @@ freq_matrix <- function(df, group_vars, descending = TRUE, weight_var = NULL) {
   # to go through several convolutions 
   step_5 <- select(step_4, -total, -percent, -!!sym(group_vars[1])) %>%
     gather(my_columns, my_values) %>%
-    mutate(percent = ((my_values / sum(my_values)) * 100)) %>%
+    mutate(percent = round((my_values / sum(my_values)) * 100, places)) %>%
     select(-my_values) %>%
     spread(my_columns, percent) %>%
     mutate(total = rowSums(across(where(is.numeric)), na.rm = TRUE),
